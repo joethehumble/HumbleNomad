@@ -1,15 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
+      <img src='/logo3.png' alt="Logo" />
+        <h2>
           Humble Nomad
-        </p>
-        <h2>A BOONDOCKING APP </h2>
+        </h2>
+        <p>A BOONDOCKING APP </p>
         <a
           className="App-link"
           href="https://reactjs.org"
