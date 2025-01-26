@@ -1,0 +1,32 @@
+/* Prevent scrolling on the entire page */
+body, html {
+    overflow: hidden; /* Disable scrolling on the main body */
+    height: 100%; /* Ensure the body takes up the full height of the screen */
+    margin: 0; /* Remove default margin to avoid unexpected scrollbars */
+}
+
+/* Create scrollable areas where necessary */
+.scrollable {
+    overflow: hidden; /* Enable scrolling within a specific area */
+    max-height: 100vh; /* Ensure the area doesn't exceed the viewport height */
+}
+
+/* Allow scrolling for sidebar */
+.sidebar {
+    overflow: hidden; /* Enable scrolling in sidebar */
+    max-height: 100vh; /* Ensure it doesn't extend beyond the viewport height */
+}
+
+/* Allow scrolling for the content */
+.main-content {
+    overflow: hidden; /* Enable scrolling in main content */
+    max-height: 80vh; /* Limit the content height */
+    padding: 20px; /* Optional: Add padding to the content */
+}
+
+/* Allow scrolling on the body for smaller devices */
+@media (max-width: 768px) {
+    body, html {
+        overflow: hidden; /* Allow scrolling on the body for mobile */
+    }
+}
