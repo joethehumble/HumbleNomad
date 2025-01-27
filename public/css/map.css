@@ -1,0 +1,43 @@
+#map {
+    height: 500px;
+    width: 100%;
+  }
+  
+  .zoom-to-user-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .css-icon {
+    position: relative;
+  }
+  
+  .gps_ring {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(0, 255, 0, 0.5);
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  

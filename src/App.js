@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import Map from "./map"; // Importing the Map component
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,12 +40,7 @@ function App() {
       </nav>
     
       <main>
-
-      
-
-
-
-      <div id="map"></div>
+        <Map /> {/* Adding the Map component */}
         <div className="nav-bar">
           <div 
             id="map-btn" 
