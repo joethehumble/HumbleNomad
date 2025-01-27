@@ -8,6 +8,7 @@
   z-index: 0; /* Keep it in the background */
   margin: 0;
   padding: 0;
+  transition: transform 0.25s ease; /* Add smooth transition for zoom */
 }
 
 /* Body and html setup to make sure the map fills the viewport */
@@ -19,8 +20,22 @@ body {
   overflow: hidden; /* Prevent scrolling */
 }
 
-/* Optional: Style for other elements if needed */
+/* Ensure no extra margins/paddings are added when resizing */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4; /* Fallback background color */
+  touch-action: none; /* Disable touch gestures to improve map dragging */
+}
+
+/* Prevent zooming by pinch gestures on mobile */
+html, body {
+  -ms-touch-action: none; /* Disable touch gestures on IE */
+  touch-action: none; /* Disable touch gestures */
+}
+
+/* Add a simple class for mobile-friendly view, ensuring touch responsiveness */
+@media (max-width: 768px) {
+  #map {
+    transition: none; /* Disable zoom transition on mobile */
+  }
 }
