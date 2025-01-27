@@ -1,56 +1,48 @@
-/* General reset and full-page styling */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #f4f4f4;
-}
+/* App.css */
 
-/* Mobile-first layout: fixed width for the app */
-#root {
-  position: relative;
-  width: 375px; /* Typical mobile width */
-  height: 100%;
-  margin: 0 auto; /* Center app on wider screens */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow for app-like look */
-  background: white;
-  overflow: hidden; /* Prevent scrolling within the app */
-}
-
-/* Make the map container fit perfectly */
-#map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-/* Example for nav-bar or other fixed elements */
-.nav-bar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-  background-color: #333;
-  color: white;
+.loading-screen {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
+  background-color: #282c34; /* Dark background */
+  color: white;
+  font-family: "Arial", sans-serif;
 }
 
-/* Typography scaling */
-body {
-  font-family: Arial, sans-serif;
-  font-size: 14px; /* Default size */
+.loading-logo {
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite; /* Spinning animation */
 }
 
-/* Media query for larger screens */
-@media (min-width: 768px) {
-  #root {
-    width: 414px; /* Wider mobile (e.g., iPhone 12 Pro Max) */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.App {
+  text-align: center;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+  color: white;
+}
+
+main {
+  padding: 20px;
 }
