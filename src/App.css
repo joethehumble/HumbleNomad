@@ -171,11 +171,6 @@
   }
 }
 
-/* Style for the user location marker */
-.user-location-marker {
-  position: relative;
-}
-
 /* Static blue circle with white border */
 .pulse-static {
   width: 12px;
@@ -184,32 +179,39 @@
   border: 2px solid white; /* White border */
   border-radius: 50%; /* Make it circular */
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center it perfectly */
   z-index: 2; /* Make sure it's above the pulse */
+  box-shadow: 0 0 8px rgba(0, 162, 255, 0.8); /* Optional subtle glow */
 }
 
 /* Transparent black pulse effect */
 .pulse {
-  width: 28px;  /* Larger size for the pulse effect */
-  height: 28px;
-  background-color: rgba(8, 186, 230, 0.644); /* Transparent black */
+  width: 27px;  /* Starting size of the pulse */
+  height: 27px;
+  background-color: rgba(8, 186, 230, 0.644); /* Transparent cyan */
   border-radius: 50%; /* Make it circular */
   position: absolute;
-  top: -5px;
-  left: -5px;
-  animation: pulse-animation 1.1s infinite ease-in-out;
-  z-index: 1; /* Below the static circle */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) scale(0); /* Start at the center with scale 0 */
+  animation: pulse-animation 2s ease-out infinite; /* Pulsing animation */
+  z-index: 1; /* Behind the static circle */
 }
 
 @keyframes pulse-animation {
   0% {
-    opacity: 0.5; /* Start with a faint glow */
+    transform: translate(-50%, -50%) scale(0); /* Start small */
+    opacity: 0.7; /* Slight opacity */
   }
   50% {
-    opacity: 1; /* Increase opacity to simulate a stronger pulse */
+    transform: tran5late(-50%, -50%) scale(.5); /* Expand pulse */
+    opacity: 10; /* Fading */
   }
   100% {
-    opacity: 0.1; /* Fade back to faint glow */
+    transform: translate(-50%, -50%) scale(1.3); /* Full expansion */
+    opacity: 0; /* Fully transparent */
   }
 }
+
