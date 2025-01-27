@@ -1,43 +1,26 @@
+/* Ensure the map takes up the full width and height of the page */
 #map {
-    height: 500px;
-    width: 100%;
-  }
-  
-  .zoom-to-user-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .css-icon {
-    position: relative;
-  }
-  
-  .gps_ring {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(0, 255, 0, 0.5);
-    animation: pulse 1.5s infinite;
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.5);
-      opacity: 0.5;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Keep it in the background */
+  margin: 0;
+  padding: 0;
+}
+
+/* Body and html setup to make sure the map fills the viewport */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+/* Optional: Style for other elements if needed */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Fallback background color */
+}
