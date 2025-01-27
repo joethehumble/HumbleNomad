@@ -1,0 +1,63 @@
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Initially hidden off-screen */
+    width: 250px;
+    height: 100%;
+    background-color: #ffffff;
+    color: #333; /* Improved contrast for links */
+    padding: 20px;
+    z-index: 9999; /* Ensure it's above other elements */
+    box-shadow: 0 0 15px rgba(201, 67, 5, 0.5); /* Adjusted for subtle shadow */
+    transition: left 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for opening and closing */
+}
+
+/* When the sidebar is open */
+.sidebar.open {
+    left: 0;
+}
+
+/* Sidebar Title */
+.sidebar-title {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: rgb(7, 6, 7);
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Sidebar Close Button */
+.sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.sidebar .close-btn:hover {
+    color: #f05e1a;
+}
+
+/* Sidebar Links */
+.sidebar a {
+    color: #333; /* Darker color for better readability */
+    text-decoration: none;
+    display: block;
+    margin: 15px 0;
+    font-size: 18px;
+    padding: 10px;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background for hover */
+    padding-left: 15px;
+    border-left: 5px solid #f85b00;
+}

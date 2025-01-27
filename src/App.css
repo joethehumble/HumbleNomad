@@ -1,0 +1,48 @@
+/* App.css */
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34; /* Dark background */
+  color: white;
+  font-family: "Arial", sans-serif;
+}
+
+.loading-logo {
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite; /* Spinning animation */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.App {
+  text-align: center;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+  color: white;
+}
+
+main {
+  padding: 20px;
+}

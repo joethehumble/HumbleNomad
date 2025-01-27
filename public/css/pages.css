@@ -1,0 +1,11 @@
+
+/* For scrollable pages, you can add specific styles */
+.page.scrollable {
+    overflow: hidden; /* Allow scrolling on specific pages */
+}
+
+/* Optional: Style the container to prevent any scrolling outside */
+#pages-container {
+    overflow: hidden; /* Prevent scrolling on the container */
+    position: relative; /* Keep everything contained */
+}
