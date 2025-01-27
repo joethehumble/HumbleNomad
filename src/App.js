@@ -13,6 +13,11 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleButtonClick = (pageId) => {
+    console.log(`Navigating to ${pageId}`);
+    // You can set your page logic here, such as state to control the page displayed
+  };
+
   if (isLoading) {
     return (
       <div className="loading-screen">
@@ -24,36 +29,58 @@ function App() {
 
   return (
     <div className="App">
-      <div className="top-nav">
-        <input
-          type="text"
-          id="top-search-bar"
-          className="search-bar"
-          placeholder="Search for a campsite..."
+      <nav className="top-nav">
+        <input 
+          type="text" 
+          id="top-search-bar" 
+          className="search-bar" 
+          placeholder="Search for a campsite..." 
         />
-      </div>
-
-      <div class="nav-bar">
-        <div id="map-btn" class="page">
+      </nav>
+    
+      <main>
+        <div className="nav-bar">
+          <div 
+            id="map-btn" 
+            className="page"
+            onClick={() => handleButtonClick('campsite')}
+          >
             🏕️ <span>Campsite</span>
-        </div>
+          </div>
 
-        <div id="favs-btn" onclick="setPageId('favs-page'); setActive(this);">
+          <div 
+            id="favs-btn" 
+            className="page"
+            onClick={() => handleButtonClick('favs')}
+          >
             ❤️ <span>Favs</span>
-        </div>
+          </div>
 
-        <div id="dashboard-btn" class="page">
+          <div 
+            id="dashboard-btn" 
+            className="page"
+            onClick={() => handleButtonClick('dashboard')}
+          >
             🛖 <span>Dashboard</span>
-        </div>
+          </div>
 
-        <div id="forums-btn" class="page">
+          <div 
+            id="forums-btn" 
+            className="page"
+            onClick={() => handleButtonClick('forums')}
+          >
             🗯️ <span>Forums</span>
-        </div>
+          </div>
 
-        <div id="profile-btn" class="page">      
+          <div 
+            id="profile-btn" 
+            className="page"
+            onClick={() => handleButtonClick('profile')}
+          >
             🪪 <span>Profile</span>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
