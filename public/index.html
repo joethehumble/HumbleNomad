@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="css/top-nav.css">
     <link rel="stylesheet" href="css/trips.css">
     <link rel="manifest" href="manifest.json">
-
   <!-- React's entry point and basic setup -->
 </head>
 
@@ -41,10 +40,26 @@
   
   <!-- React app's root div -->
   <div id="root"></div>
-  <div id="map"></div>
-  <!-- React and main JS script -->
-  <script src="%PUBLIC_URL%/static/js/bundle.js"></script>
+
+  
+  <script src="js/guides.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/map.js"></script>
   <script src="js/nav-footer.js"></script>
+  <script src="js/overlay-menu.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/side-bar.js"></script>
+  <script src="js/top-nav.js"></script>
+  <script src="js/trips.js"></script>
+  <script src="js/service-worker.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- React script -->
+  <script src="%PUBLIC_URL%/static/js/bundle.js"></script>
+  <script src="%PUBLIC_URL%/static/js/vendors~main.chunk.js"></script>
+  <script src="%PUBLIC_URL%/static/js/main.chunk.js"></script>
 
 </body>
 

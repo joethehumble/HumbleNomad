@@ -39,6 +39,12 @@ function App() {
       </nav>
     
       <main>
+
+      
+
+
+
+      <div id="map"></div>
         <div className="nav-bar">
           <div 
             id="map-btn" 
