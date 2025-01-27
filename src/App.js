@@ -1,12 +1,14 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import ".";
 
 // Lazy-load the Map component
 const Map = lazy(() => import("./map"));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [layersMenuOpen, setLayersMenuOpen] = useState(false); // State for layers menu
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,6 +19,10 @@ function App() {
 
   const handleButtonClick = (pageId) => {
     console.log(`Navigating to ${pageId}`);
+  };
+
+  const toggleLayersMenu = () => {
+    setLayersMenuOpen(!layersMenuOpen);
   };
 
   // If the app is still loading, show the loading screen
@@ -44,7 +50,7 @@ function App() {
       {/* Main Content */}
       <main className="main-content">
         <Suspense fallback={<div>Loading Map...</div>}>
-          <Map />
+          <Map layersMenuOpen={layersMenuOpen} toggleLayersMenu={toggleLayersMenu} />
         </Suspense>
       </main>
 

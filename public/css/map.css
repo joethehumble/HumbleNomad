@@ -39,3 +39,136 @@ html, body {
     transition: none; /* Disable zoom transition on mobile */
   }
 }
+
+/* Static blue circle with white border */
+.pulse-static {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(255, 136, 0); /* Blue center */
+  border: 2px solid white; /* White border */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center it perfectly */
+  z-index: 2; /* Make sure it's above the pulse */
+  box-shadow: 0 0 8px rgba(255, 124, 1, 0.8); /* Optional subtle glow */
+}
+
+/* Transparent black pulse effect */
+.pulse {
+  width: 27px; /* Starting size of the pulse */
+  height: 27px;
+  background-color: rgba(230, 126, 8, 0.5); /* Transparent cyan */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) scale(0); /* Start at the center with scale 0 */
+  animation: pulse-animation 2s ease-out infinite; /* Pulsing animation */
+  z-index: 1; /* Behind the static circle */
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0); /* Start small */
+    opacity: 0.7; /* Slight opacity */
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.5); /* Expand pulse */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3); /* Full expansion */
+    opacity: 0; /* Fully transparent */
+  }
+}
+
+/* Location button styling */
+.location-button {
+  font-size: 1px;
+  background-color: #e6731500; /* Primary blue color */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  transition: background-color 0.3s ease; /* Smooth color transition */
+  z-index: 999;
+  position: absolute; /* Position it absolutely */
+  bottom: 95px; /* Adjust to place it 30px from the bottom */
+  left: 20px; /* Adjust to place it 20px from the left */
+}
+
+.location-button:hover {
+  background-color: #00000000; /* Highlight color on hover */
+  transform: scale(1.1); /* Slight enlargement on hover */
+}
+
+
+
+/* Layers Button Styling */
+.layers-button {
+  display: flex; /* Center the icon inside */
+  justify-content: center;
+  align-items: center;
+  width: 60px; /* Same size as location button */
+  height: 60px;
+  background-color: #e6731500; /* Matching the location button */
+  color: white; /* Icon color */
+  border: none;
+  border-radius: 50%; /* Circular shape */
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effects */
+  position: absolute; /* Positioned on the map */
+  top: 120px;
+  right: 20px; /* Distance from the left */
+  z-index: 999; /* Ensure it's above the map */
+}
+
+.layers-button:hover {
+  background-color: #00000000; /* Highlight color on hover */
+  transform: scale(1.1); /* Slight enlargement on hover */
+}
+
+.layers-button:active {
+  transform: scale(1); /* Reset scale on click */
+}
+
+/* Layers Icon Inside the Button */
+.layers-button svg {
+  width: 30px; /* Icon size */
+  height: 30px;
+  fill: white; /* Icon color matches button text */
+}
+
+/* Layer Menu */
+.layer-menu {
+  position: absolute;
+  top: 95px;
+  right: 20px; /* Positioned on the top right */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  visibility: hidden; /* Initially hidden */
+  opacity: 0;
+  transform-origin: top right; /* Open from top right */
+  transform: scaleX(0) scaleY(0); /* Start collapsed in both axes */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Show the menu when it's open */
+.layer-menu.open {
+  visibility: visible;
+  opacity: 1;
+  transform: scaleX(1) scaleY(1); /* Fully expanded in both directions */
+}
+

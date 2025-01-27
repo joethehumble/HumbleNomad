@@ -76,13 +76,9 @@
 }
 
 /* Mobile Styles */
-@media (max-width: px) {
+@media (max-width: 600px) {
     .nav-bar {
         height: 70px; /* Adjusted height */
-    }
-
-    .nav-bar div {
-        padding: 6px 10px; /* Smaller padding */
     }
 
     .nav-bar div span {
@@ -90,7 +86,7 @@
     }
 
     .nav-bar div i {
-        font-size: 20px; /* Smaller icon for mobile */
+        font-size: 9px; /* Smaller icon for mobile */
     }
 }
 
@@ -125,4 +121,27 @@
     100% {
         box-shadow: 0 0 5px rgba(255, 100, 50, 0.2);
     }
+
+    
 }
+
+
+@media (max-width: 600px) {
+    /* Adjust for smaller screens */
+    .nav-bar {
+      height: 80px; /* Reduce height for smaller screens */
+    }
+  
+    .nav-bar .page {
+      font-size: 12px; /* Adjust icon and text size */
+    }
+  
+    .nav-bar .page span {
+      font-size: 9px; /* Smaller text for labels */
+    }
+  }
+
+
+
+
+
