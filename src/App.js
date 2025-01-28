@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import ".";
 
 // Lazy-load the Map component
 const Map = lazy(() => import("./map"));
@@ -61,35 +60,40 @@ function App() {
           className="page"
           onClick={() => handleButtonClick("campsite")}
         >
-          🏕️ <span>Campsite</span>
+          <img src="images/nav-bar/campsite.png" alt="Map" />
+          <span>CAMPSITE</span>
         </div>
         <div
           id="favs-btn"
           className="page"
           onClick={() => handleButtonClick("favs")}
         >
-          ❤️ <span>Favs</span>
+          <img src="images/nav-bar/favs.png" alt="Favorites" />
+          <span>FAVS</span>
         </div>
         <div
           id="dashboard-btn"
           className="page"
           onClick={() => handleButtonClick("dashboard")}
         >
-          🛖 <span>Dashboard</span>
+          <img src="images/nav-bar/dashboard.png" alt="Dashboard" />
+          <span>DASHBOARD</span>
         </div>
         <div
           id="forums-btn"
           className="page"
           onClick={() => handleButtonClick("forums")}
         >
-          🗯️ <span>Forums</span>
+          <img src="images/nav-bar/forums.png" alt="Forums" />
+          <span>FORUMS</span>
         </div>
         <div
           id="profile-btn"
           className="page"
           onClick={() => handleButtonClick("profile")}
         >
-          🪪 <span>Profile</span>
+          <img src="images/nav-bar/profile.png" alt="Profile" />
+          <span>PROFILE</span>
         </div>
       </footer>
     </div>

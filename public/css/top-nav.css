@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
     width: 100%; /* Full width */
-    height: 80px; /* Consistent height for the navbar */
+    height: 120px; /* Consistent height for the navbar */
     background-color: #333; /* Background color */
     display: flex; /* Flexbox for centering */
     justify-content: center; /* Center the search bar horizontally */
