@@ -1,4 +1,4 @@
-/* General Map and UI Styling */
+/* Ensure the map takes up the full width and height of the page */
 #map {
   position: absolute;
   top: 0;
@@ -11,11 +11,56 @@
   transition: transform 0.25s ease;
 }
 
+/* Body and html setup */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+/* Static blue circle with white border */
+.pulse-static {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(255, 136, 0); /* Blue center */
+  border: 2px solid white; /* White border */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center it perfectly */
+  z-index: 2; /* Make sure it's above the pulse */
+  box-shadow: 0 0 8px rgba(255, 124, 1, 0.8); /* Optional subtle glow */
+}
+
+/* Transparent black pulse effect */
+.pulse {
+  width: 27px; /* Starting size of the pulse */
+  height: 27px;
+  background-color: rgba(230, 126, 8, 0.5); /* Transparent cyan */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%) scale(0); /* Start at the center with scale 0 */
+  animation: pulse-animation 2s ease-out infinite; /* Pulsing animation */
+  z-index: 1; /* Behind the static circle */
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0); /* Start small */
+    opacity: 0.7; /* Slight opacity */
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.5); /* Expand pulse */
+    opacity: 1; /* Fully visible */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3); /* Full expansion */
+    opacity: 0; /* Fully transparent */
+  }
 }
 
 .location-button, .layers-button {
