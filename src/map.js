@@ -8,6 +8,7 @@ const Map = () => {
   const markerRef = useRef(null);
   const [userLocation, setUserLocation] = useState(null);
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
+  const [heading, setHeading] = useState(null); // State for device heading
   const menuRef = useRef(null);
 
   const initializeMap = useCallback(() => {
@@ -52,7 +53,7 @@ const Map = () => {
         blm: blmLayer,
       };
 
-      mapInstanceRef.current.addLayer(osmLayer);
+      mapInstanceRef.current.addLayer(osmLayer); // Default to OSM layer
     }
   }, []);
 
@@ -67,40 +68,93 @@ const Map = () => {
     };
   }, [initializeMap]);
 
+  // Device orientation listener to update heading
+  useEffect(() => {
+    const handleDeviceOrientation = (event) => {
+      if (event.alpha !== null) {
+        setHeading(event.alpha); // Update heading with alpha value (direction the device is facing)
+      }
+    };
+
+    window.addEventListener("deviceorientation", handleDeviceOrientation);
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleDeviceOrientation);
+    };
+  }, []);
   const handleLocationClick = useCallback(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      // Use watchPosition for continuous location tracking
+      const watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation({ lat: latitude, lng: longitude });
+          
+          // Fly to user's position with smooth animation
           mapInstanceRef.current.flyTo([latitude, longitude], 15, { animate: true });
-
+    
+          // Remove previous marker if it exists
           if (markerRef.current) {
             mapInstanceRef.current.removeLayer(markerRef.current);
           }
-
+  
+          // Custom icon with a semi-transparent arrow
           const userLocationIcon = L.divIcon({
             className: "user-location-marker",
-            html: `<div class="pulse"></div><div class="pulse-static"></div>`,
-            iconSize: [60, 60],
-            iconAnchor: [30, 30],
+            html: `
+              <div class="pulse-glow"></div>
+              <div class="pulse"></div>
+              <div class="pulse-static"></div>
+              <div class="arrow-wrapper">
+                <div class="arrow"></div>
+              </div>
+            `,
+            iconSize: [50, 50],
+            iconAnchor: [25, 25],
           });
-
-          markerRef.current = L.marker([latitude, longitude], { icon: userLocationIcon }).addTo(mapInstanceRef.current);
+    
+          // Create or update the marker
+          markerRef.current = L.marker([latitude, longitude], {
+            icon: userLocationIcon,
+          }).addTo(mapInstanceRef.current);
+    
+          // Apply rotation based on the heading
+          if (heading !== null) {
+            const arrowElement = document.querySelector(".arrow-wrapper");
+            if (arrowElement) {
+              arrowElement.style.transform = `rotate(${heading}deg)`;
+            }
+          }
         },
-        (error) => console.error("Error fetching location:", error)
+        (error) => console.error("Error fetching location:", error),
+        {
+          enableHighAccuracy: true, // High accuracy for GPS
+          maximumAge: 10000, // Reuse cached position if available (up to 10 seconds old)
+          timeout: 27000, // Timeout for getting location
+        }
       );
+  
+      // Cleanup the watch when the component unmounts
+      return () => {
+        if (watchId) {
+          navigator.geolocation.clearWatch(watchId);
+        }
+      };
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  }, []);
+  }, [heading]);
+  
+  
 
   const handleLayersClick = () => {
     setIsLayerMenuOpen((prev) => !prev);
   };
 
-  const handleLayerToggle = (layer) => {
-    const selectedLayer = mapInstanceRef.current.layers[layer];
+  const handleLayerToggle = (layerName) => {
+    const selectedLayer = mapInstanceRef.current.layers[layerName];
+    if (!selectedLayer) return; // Early exit if the layer is undefined
+
     const currentLayer = mapInstanceRef.current.hasLayer(selectedLayer);
 
     if (currentLayer) {
@@ -126,47 +180,66 @@ const Map = () => {
   return (
     <div>
       <div id="map" ref={mapContainerRef} style={{ height: "100vh", width: "100%" }} />
+  
+      {/* Location Button */}
       <button onClick={handleLocationClick} className="location-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2 L19 21 L12 17 L5 21 Z" />
-        </svg>
+        <img src="images/mapmarkers/blue-gps-icon.png" alt="Location Icon" width="40" height="40" />
       </button>
-
+  
+      {/* Layers Button */}
       <button onClick={handleLayersClick} className="layers-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5zm0 5l10 5v6l-10 5-10-5v-6l10-5z" />
-        </svg>
+        <img src="images/layersmenu/blue-layers-icon.png" alt="Layers Icon" width="40" height="40" />
       </button>
-
+  
+      {/* Layer Menu */}
       <div ref={menuRef} className={`layer-menu ${isLayerMenuOpen ? "open" : ""}`}>
-        <p className="layer-menu-title">Layers</p>
-        <div className="category">
-          {/* Layer toggle buttons */}
-          {["BLM", "USFS", "VERIZON", "ATT", "TMOBILE", "SPRINT"].map((layer, index) => (
-            <div key={index} className="layer-icon-container">
+        <div className="layer-menu-title">LAYERS</div>
+        <div className="layer-grid">
+          {[ 
+            { key: "blm", name: "BLM Land", img: "images/layersmenu/BLM.PNG" },
+            { key: "usfs", name: "USFS Land", img: "images/layersmenu/USFS.PNG" },
+            { key: "verizon", name: "Verizon", img: "images/layersmenu/VERIZON.PNG" },
+            { key: "att", name: "AT&T", img: "images/layersmenu/ATT.PNG" },
+            { key: "tmobile", name: "T-Mobile", img: "images/layersmenu/TMOBILE.PNG" },
+            { key: "sprint", name: "Sprint", img: "images/layersmenu/SPRINT.PNG" }
+          ].map(({ key, name, img }) => (
+            <div key={key} className="layer-icon-container">
               <img
-                src={`images/layersmenu/${layer}.PNG`}
-                alt={`${layer} Land`}
-                onClick={() => handleLayerToggle(layer.toLowerCase())}
+                src={img}
+                alt={name}
+                onClick={() => handleLayerToggle(key)}
                 className="layer-icon"
               />
-              <p className="layer-icon-text">{layer} Land</p>
+              <p className="layer-icon-text">{name}</p>
             </div>
           ))}
         </div>
       </div>
-
+  
       {userLocation && (
-        <div style={{
-          position: "absolute", bottom: "30px", left: "20px",
-          background: "rgba(255, 255, 255, 0.7)", padding: "5px 15px",
-          borderRadius: "8px", fontSize: "16px", color: "#333", fontWeight: "bold",
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "30px",
+            left: "20px",
+            background: "rgba(255, 255, 255, 0.7)",
+            padding: "5px 15px",
+            borderRadius: "8px",
+            fontSize: "16px",
+            color: "#333",
+            fontWeight: "bold",
+          }}
+        >
           Your location: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
         </div>
       )}
     </div>
+    
   );
 };
 
+
+
 export default Map;
+
+

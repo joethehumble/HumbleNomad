@@ -1,3 +1,4 @@
+
 /* Top Navigation Bar Styles */
 .top-nav {
     position: fixed; /* Stays fixed at the top */
@@ -10,22 +11,27 @@
     justify-content: center; /* Center the search bar horizontally */
     align-items: center; /* Center the search bar vertically */
     z-index: 1000; /* Ensure it's above other content */
-    border-bottom: 2px solid #f74a06; /* Accent border at the bottom */
+    border-bottom: 2px solid ; /* Accent border at the bottom */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
     padding: 0; /* Remove padding to avoid overflow */
     box-sizing: border-box; /* Ensure padding and borders are included in width/height calculations */
 }
 
+/*Humble Nomad Logo */
+.Humble-nomad-logo{
+    position: fixed;
+}
+
 /* Search Bar Styles */
 .search-bar {
     position: fixed;
-    top: 10px;
-    width: 98%; /* Fixed width for all screens */
+    bottom: 125px;
+    width: 60%; /* Fixed width for all screens */
     height: 45px; /* Ideal height for comfortable typing */
     padding: 0 40px; /* Inner padding for better spacing */
     font-size: 16px; /* Text size */
-    border: 2px solid #ddd; /* Subtle border */
-    border-radius: 3px; /* Rounded corners */
+    border: 2px solid #f1670b; /* Subtle border */
+    border-radius: 1px; /* Rounded corners */
     outline: none; /* Remove default outline */
     background-color: #f9f9f9; /* Light background for better readability */
     transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth effects */
@@ -47,7 +53,7 @@
     font-size: 14px; /* Slightly smaller font size */
     font-weight: bold;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    padding-left: 20;
+    padding-left: 20px;
 }
 
 
@@ -65,14 +71,14 @@
     .search-bar {
         font-size: 16px; /* Keep consistent font size */
         height: 45px; /* Keep consistent height */
-        width: 98%; /* Fixed width */
+        width: 60%; /* Fixed width */
         margin: 0 auto; /* Center the search bar on smaller screens */
     }
 }
 
 @media (min-width: 768px) {
     .search-bar {
-        width: 98%; /* Ensure fixed width on larger screens */
+        width: 60%; /* Ensure fixed width on larger screens */
         margin: 0 auto; /* Center the search bar */
     }
 
