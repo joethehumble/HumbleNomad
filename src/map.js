@@ -8,24 +8,32 @@ const Map = () => {
   const markerRef = useRef(null);
   const [userLocation, setUserLocation] = useState(null);
   const [isLayerMenuOpen, setIsLayerMenuOpen] = useState(false);
-  const [heading, setHeading] = useState(null); // State for device heading
   const menuRef = useRef(null);
 
+  // Initialize map function with optimizations
   const initializeMap = useCallback(() => {
     if (!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapContainerRef.current, {
         zoomControl: true,
         center: [37.7749, -122.4194], // Default to San Francisco
-        zoom: 10,
+        zoom: 12,
         preferCanvas: true,
         dragging: true,
         inertia: true,
         zoomAnimation: true,
         fadeAnimation: true,
-        maxZoom: 100,
-        minZoom: 1,
+        maxZoom: 18,
+        minZoom: 3,
+        zoomSnap: 0.5,
+        zoomDelta: 1,
+        wheelDebounceTime: 100,
+        doubleClickZoom: true,
+        tap: true,
+        touchZoom: true,
+        tapTolerance: 15,
       });
 
+      // Tile layers
       const osmLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
@@ -42,15 +50,10 @@ const Map = () => {
         { attribution: '&copy; <a href="https://www.esri.com/">Esri</a>' }
       );
 
-      const usfsLayer = L.tileLayer("USFS_LAYER_URL", { attribution: 'USFS Attribution' });
-      const blmLayer = L.tileLayer("BLM_LAYER_URL", { attribution: 'BLM Attribution' });
-
       mapInstanceRef.current.layers = {
         osm: osmLayer,
         satellite: satelliteLayer,
         terrain: terrainLayer,
-        usfs: usfsLayer,
-        blm: blmLayer,
       };
 
       mapInstanceRef.current.addLayer(osmLayer); // Default to OSM layer
@@ -68,11 +71,54 @@ const Map = () => {
     };
   }, [initializeMap]);
 
-  // Device orientation listener to update heading
+  // Fetch user location with async/await
+  const fetchUserLocation = useCallback(async () => {
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lng: longitude });
+        mapInstanceRef.current.flyTo([latitude, longitude], 15, { animate: true });
+
+        if (markerRef.current) {
+          mapInstanceRef.current.removeLayer(markerRef.current);
+        }
+
+        const userLocationIcon = L.divIcon({
+          className: "user-location-marker",
+          html: `
+            <div class="pulse-glow"></div>
+            <div class="pulse"></div>
+            <div class="pulse-static"></div>
+            <div class="arrow-wrapper">
+              <div class="arrow"></div>
+            </div>
+          `,
+          iconSize: [50, 50],
+          iconAnchor: [25, 25],
+        });
+
+        markerRef.current = L.marker([latitude, longitude], {
+          icon: userLocationIcon,
+        }).addTo(mapInstanceRef.current);
+
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  // Device orientation listener to update heading and rotate the marker
   useEffect(() => {
     const handleDeviceOrientation = (event) => {
       if (event.alpha !== null) {
-        setHeading(event.alpha); // Update heading with alpha value (direction the device is facing)
+        if (markerRef.current) {
+          markerRef.current.setRotationAngle(event.alpha); // Rotate the marker based on device heading
+        }
       }
     };
 
@@ -82,81 +128,18 @@ const Map = () => {
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
     };
   }, []);
-  const handleLocationClick = useCallback(() => {
-    if (navigator.geolocation) {
-      // Use watchPosition for continuous location tracking
-      const watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lng: longitude });
-          
-          // Fly to user's position with smooth animation
-          mapInstanceRef.current.flyTo([latitude, longitude], 15, { animate: true });
-    
-          // Remove previous marker if it exists
-          if (markerRef.current) {
-            mapInstanceRef.current.removeLayer(markerRef.current);
-          }
-  
-          // Custom icon with a semi-transparent arrow
-          const userLocationIcon = L.divIcon({
-            className: "user-location-marker",
-            html: `
-              <div class="pulse-glow"></div>
-              <div class="pulse"></div>
-              <div class="pulse-static"></div>
-              <div class="arrow-wrapper">
-                <div class="arrow"></div>
-              </div>
-            `,
-            iconSize: [50, 50],
-            iconAnchor: [25, 25],
-          });
-    
-          // Create or update the marker
-          markerRef.current = L.marker([latitude, longitude], {
-            icon: userLocationIcon,
-          }).addTo(mapInstanceRef.current);
-    
-          // Apply rotation based on the heading
-          if (heading !== null) {
-            const arrowElement = document.querySelector(".arrow-wrapper");
-            if (arrowElement) {
-              arrowElement.style.transform = `rotate(${heading}deg)`;
-            }
-          }
-        },
-        (error) => console.error("Error fetching location:", error),
-        {
-          enableHighAccuracy: true, // High accuracy for GPS
-          maximumAge: 10000, // Reuse cached position if available (up to 10 seconds old)
-          timeout: 27000, // Timeout for getting location
-        }
-      );
-  
-      // Cleanup the watch when the component unmounts
-      return () => {
-        if (watchId) {
-          navigator.geolocation.clearWatch(watchId);
-        }
-      };
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  }, [heading]);
-  
-  
 
+  // Toggle Layer Menu visibility
   const handleLayersClick = () => {
     setIsLayerMenuOpen((prev) => !prev);
   };
 
+  // Handle layer toggling
   const handleLayerToggle = (layerName) => {
     const selectedLayer = mapInstanceRef.current.layers[layerName];
-    if (!selectedLayer) return; // Early exit if the layer is undefined
+    if (!selectedLayer) return;
 
     const currentLayer = mapInstanceRef.current.hasLayer(selectedLayer);
-
     if (currentLayer) {
       mapInstanceRef.current.removeLayer(selectedLayer);
     } else {
@@ -164,6 +147,7 @@ const Map = () => {
     }
   };
 
+  // Close Layer Menu if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -172,6 +156,7 @@ const Map = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -180,29 +165,43 @@ const Map = () => {
   return (
     <div>
       <div id="map" ref={mapContainerRef} style={{ height: "100vh", width: "100%" }} />
-  
+
       {/* Location Button */}
-      <button onClick={handleLocationClick} className="location-button">
+      <button onClick={fetchUserLocation} className="location-button">
         <img src="images/mapmarkers/blue-gps-icon.png" alt="Location Icon" width="40" height="40" />
       </button>
-  
+
       {/* Layers Button */}
       <button onClick={handleLayersClick} className="layers-button">
         <img src="images/layersmenu/blue-layers-icon.png" alt="Layers Icon" width="40" height="40" />
       </button>
-  
+
       {/* Layer Menu */}
       <div ref={menuRef} className={`layer-menu ${isLayerMenuOpen ? "open" : ""}`}>
         <div className="layer-menu-title">LAYERS</div>
         <div className="layer-grid">
-          {[ 
-            { key: "blm", name: "BLM Land", img: "images/layersmenu/BLM.PNG" },
-            { key: "usfs", name: "USFS Land", img: "images/layersmenu/USFS.PNG" },
-            { key: "verizon", name: "Verizon", img: "images/layersmenu/VERIZON.PNG" },
-            { key: "att", name: "AT&T", img: "images/layersmenu/ATT.PNG" },
-            { key: "tmobile", name: "T-Mobile", img: "images/layersmenu/TMOBILE.PNG" },
-            { key: "sprint", name: "Sprint", img: "images/layersmenu/SPRINT.PNG" }
-          ].map(({ key, name, img }) => (
+          {[{
+            key: "blm", name: "BLM Land", img: "images/layersmenu/blm.PNG", url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          }, {
+            key: "usfa", name: "USFS Land", img: "images/layersmenu/usfs.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "satellite", name: "Satellite", img: "images/layersmenu/satellite.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+         }, {
+            key: "terrain", name: "Terrain", img: "images/layersmenu/terrain.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "firesmoke", name: "Smoke & Fire", img: "images/layersmenu/firesmoke.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/USFS/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "firehazzard", name: "Fire Hazzard ", img: "images/layersmenu/firehazzard.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/Verizon/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "verizon", name: "Verizon", img: "images/layersmenu/VERIZON.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "tmobile", name: "T-Mobile", img: "images/layersmenu/TMOBILE.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/USFS/MapServer/tile/{z}/{y}/{x}"
+          }, {
+            key: "att", name: "AT&T ", img: "images/layersmenu/ATT.PNG", url: "https://server.arcgisonline.com/ArcGIS/rest/services/Verizon/MapServer/tile/{z}/{y}/{x}"
+         
+         
+         
+          }].map(({ key, name, img, url }) => (
             <div key={key} className="layer-icon-container">
               <img
                 src={img}
@@ -215,7 +214,7 @@ const Map = () => {
           ))}
         </div>
       </div>
-  
+
       {userLocation && (
         <div
           style={{
@@ -234,12 +233,7 @@ const Map = () => {
         </div>
       )}
     </div>
-    
   );
 };
 
-
-
 export default Map;
-
-
