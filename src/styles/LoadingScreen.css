@@ -1,0 +1,121 @@
+/* Loading screen container */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../loading-screen.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  z-index: 9999;
+  opacity: 1;
+}
+
+/* Hide loading screen after fade-out */
+.loading-screen.hide {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease-out, transform 0.3s ease-out;
+}
+
+/* Gradient text styling */
+.loading-text,
+.loading-text-2 {
+  font-size: 5vw;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #ffcc00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-text-stroke: 1px black;
+  text-align: center;
+  margin-top: 0;
+}
+
+.loading-text-2 {
+  font-size: 4vw;
+  background-size: 300% 300%;
+  animation: moveGradient 1s infinite linear;
+  margin-top: 2vh;
+}
+
+/* Gradient movement */
+@keyframes moveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Loading bar container */
+.loading-bar-container {
+  position: fixed;
+  bottom: 10%;
+  left: 10%;
+  width: 80%;
+  height: 5px;
+  background-color: #ddd;
+  border-radius: 10px;
+  border: 2px solid #555;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Loading bar animation */
+.loading-bar {
+  height: 100%;
+  transform: scaleX(0); 
+  transform-origin: left;
+  background: linear-gradient(to right, #ff00ff, #00ffff, #ffcc00);
+  animation: loadingBar 3s ease-out forwards;
+  border-radius: 10px;
+}
+
+@keyframes loadingBar {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+/* Van animation */
+.van-image {
+  position: absolute;
+  bottom: 5%;  /* Just above the loading bar */
+  left: 10%;  /* Start at the left edge of the loading bar */
+  width: 8%;  /* Adjust based on preference */
+  display: flex;
+  max-width: 100px;
+  z-index: 10;
+  animation: moveVan 3s ease-out forwards; /* Move it across the bar */
+}
+
+/* Van movement animation */
+@keyframes moveVan {
+  0% { left: 10%; } /* Start from left edge of loading bar */
+  100% { left: 100%; } /* Move to the right edge of loading bar */
+}
+
+/* Fade out animation for loading screen */
+@keyframes slideFadeOut {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+.loading-screen.fade-out {
+  animation: slideFadeOut 0.3s ease-in-out forwards;
+}
+
+/* Force portrait mode */
+@media screen and (orientation: landscape) {
+  body {
+    transform: rotate(0deg);
+    transform-origin: center;
+    width: 100vh;
+    height: 100vw;
+    overflow: hidden;
+    position: fixed;
+  }
+}

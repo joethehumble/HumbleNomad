@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* styles/index.css */
+@import './styles/App.css';
+@import './styles/Footer.css';
+@import './styles/Header.css';
+@import './components/Map/Map.css';
+@import './styles/LayersBtn.css';
+@import './styles/LoadingScreen.css';
+@import './styles/LocationBtn.css';
+@import './styles/SearchBar.css';
+@import './styles/Spinner.css';

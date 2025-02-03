@@ -3,38 +3,77 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, orientation=portrait">
+
+  <!-- PWA and app metadata -->
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="HUMBLE NOMAD - Your Ultimate Boondocking Companion" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="robots" content="index, follow" /> <!-- For search engine crawling -->
+
+  <!-- Web App Config -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Title -->
   <title>HUMBLE NOMAD</title>
 
   <!-- Favicon and Touch Icons -->
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/logo192.png" />
-  <link rel="apple-touch-icon" sizes="192x192" href="%PUBLIC_URL%/logo192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="%PUBLIC_URL%/logo512.png" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="icon" href="/logo.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/logo192.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/logo192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/logo512.png" />
+  <link rel="manifest" href="/manifest.json" />
 
-  <!-- Custom Stylesheets -->
-  <link rel="stylesheet" href="%PUBLIC_URL%/css/map.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/css/bottom-nav.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/css/top-nav.css" />
-
-  <!-- Fonts (Optional) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" as="style" />
+
+  <style>
+    /* Ensure body and root container are full-height and no-scroll */
+    html, body, #root {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+    }
+
+    /* Prevent rotation by forcing a portrait layout */
+    @media screen and (orientation: landscape) {
+      body {
+        transform: rotate(90deg);
+        transform-origin: center;
+        width: 100vh;
+        height: 100vw;
+        overflow: hidden;
+        position: fixed;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
 
-  <!-- React app's root div -->
+  <!-- Root container for React -->
   <div id="root"></div>
 
-  <!-- Scripts handled by React. Do not modify these. -->
+  <script>
+    // Prevent landscape mode: Forces portrait layout
+    function enforcePortraitMode() {
+      if (window.innerHeight < window.innerWidth) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+    }
+
+    window.addEventListener("resize", enforcePortraitMode);
+    enforcePortraitMode(); // Apply on load
+  </script>
 </body>
 
 </html>

@@ -1,0 +1,38 @@
+/* Search Bar Container */
+.SearchBar {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
+    z-index: 2;
+}
+
+/* Search Input */
+.SearchBar-Input {
+    flex: 1;  /* Ensures it takes full space */
+    width: 100%; /* Fills available space */
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    margin-left: 30px; 
+    background-color: transparent;
+}
+
+/* Placeholder */
+.SearchBar-Input::placeholder {
+    color: #888;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0.8;
+}

@@ -1,0 +1,89 @@
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Initially hidden off-screen */
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(90deg, #3b3b3b, #575757); /* Neutral gradient */
+    color: #333; /* Improved contrast for links */
+    padding: 20px;
+    z-index: 9999; /* Ensure it's above other elements */
+    box-shadow: 0 0 15px rgba(201, 67, 5, 0.5); /* Subtle shadow for sidebar */
+    transition: left 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for opening and closing */
+    overflow-y: auto; /* Ensure content doesn't overflow */
+
+    /* ADD BORDER HERE */
+    border-right: 3px solid #000000; /* Orange right border for 3D effect */
+}
+
+/* When the sidebar is open */
+.sidebar.open {
+    left: 0;
+    box-shadow: 0 0 15px rgba(2, 2, 2, 0.8); /* Stronger shadow when open */
+}
+
+/* Sidebar Title */
+.sidebar-title {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: rgb(7, 6, 7);
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Sidebar Close Button */
+.sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 30px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.sidebar .close-btn:hover {
+    color: #0d85f5;
+}
+
+/* Sidebar Links */
+.sidebar a {
+    color: #0d85f5; /* Darker color for better readability */
+    text-decoration: none;
+    display: block;
+    margin: 15px 0;
+    font-size: 18px;
+    padding: 10px;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly lighter background for hover */
+    padding-left: 15px;
+    border-left: 5px solid #0d85f5;
+}
+
+
+
+
+
+/* Active link */
+.sidebar a.active {
+    color: #f85b00; /* Highlight active link */
+    background-color: rgba(255, 87, 34, 0.1); /* Active background color */
+}
+
+/* Responsive: Adjust sidebar width on smaller screens */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px; /* Adjust width for smaller screens */
+    }
+
+    .sidebar a {
+        font-size: 16px; /* Adjust font size for better readability on smaller screens */
+    }
+}

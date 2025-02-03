@@ -1,0 +1,6 @@
+/* Show the map when loading is complete */
+.main-content.visible .map-container,
+.main-content.visible #map {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
